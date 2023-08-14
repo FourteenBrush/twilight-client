@@ -5,7 +5,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Ready {
-    pub application: PartialApplication,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub application: Option<PartialApplication>,
     pub guilds: Vec<UnavailableGuild>,
     pub resume_gateway_url: String,
     pub session_id: String,
@@ -43,10 +44,10 @@ mod tests {
         ];
 
         let ready = Ready {
-            application: PartialApplication {
+            application: Some(PartialApplication {
                 flags: ApplicationFlags::empty(),
                 id: Id::new(100),
-            },
+            }),
             guilds,
             resume_gateway_url: "wss://gateway.discord.gg".into(),
             session_id: "foo".to_owned(),

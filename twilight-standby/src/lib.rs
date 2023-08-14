@@ -1371,10 +1371,10 @@ mod tests {
     #[tokio::test]
     async fn test_wait_for_event() {
         let ready = Ready {
-            application: PartialApplication {
+            application: Some(PartialApplication {
                 flags: ApplicationFlags::empty(),
                 id: Id::new(1),
-            },
+            }),
             guilds: Vec::new(),
             resume_gateway_url: "wss://gateway.discord.gg".into(),
             session_id: String::new(),
