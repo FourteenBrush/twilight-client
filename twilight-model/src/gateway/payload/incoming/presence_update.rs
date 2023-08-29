@@ -1,6 +1,5 @@
-use crate::gateway::presence::Presence;
+use crate::gateway::presence::{Activity, ClientStatus, Status, UserOrId};
 use serde::{Deserialize, Serialize};
-use std::ops::{Deref, DerefMut};
 
 /// User's presence was updated.
 ///
@@ -14,20 +13,12 @@ use std::ops::{Deref, DerefMut};
 /// [`Intents::GUILD_PRESENCES`]: crate::gateway::Intents
 /// [Discord Docs/Presence Update]: https://discord.com/developers/docs/topics/gateway#presence-update
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
-pub struct PresenceUpdate(pub Presence);
-
-impl Deref for PresenceUpdate {
-    type Target = Presence;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-
-impl DerefMut for PresenceUpdate {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
+pub struct PresenceUpdate {
+    #[serde(default)]
+    pub activities: Vec<Activity>,
+    pub client_status: ClientStatus,
+    pub status: Status,
+    pub user: UserOrId,
 }
 
 #[cfg(test)]
@@ -38,14 +29,11 @@ mod tests {
     use std::{
         fmt::Debug,
         hash::Hash,
-        ops::{Deref, DerefMut},
     };
 
     assert_impl_all!(
         PresenceUpdate: Clone,
         Debug,
-        Deref,
-        DerefMut,
         Deserialize<'static>,
         Eq,
         Hash,

@@ -214,7 +214,7 @@ impl Event {
             Event::MessageDelete(e) => e.guild_id,
             Event::MessageDeleteBulk(e) => e.guild_id,
             Event::MessageUpdate(e) => e.guild_id,
-            Event::PresenceUpdate(e) => Some(e.0.guild_id),
+            Event::PresenceUpdate(_) => None,
             Event::ReactionAdd(e) => e.0.guild_id,
             Event::ReactionRemove(e) => e.0.guild_id,
             Event::ReactionRemoveAll(e) => e.guild_id,
