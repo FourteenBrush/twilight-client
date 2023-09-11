@@ -15,6 +15,7 @@ time = { default-features = false, features = ["parsing", "std"], version = "0.3
 serde_json = { default-features = false, features = ["std"], version = "1" }
 serde_test = { default-features = false, version = "1" }
 static_assertions = { default-features = false, version = "1.0" }
+strum = { version = "0.25", features = ["derive"] }
 
 [dev-dependencies]
 criterion = { default-features = false, version = "0.4" }

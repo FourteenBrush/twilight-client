@@ -3,6 +3,7 @@ use crate::{
     id::{marker::GenericMarker, Id},
 };
 use serde::{Deserialize, Serialize};
+use strum::EnumString;
 
 /// Permission overwrite data for a role or member.
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
@@ -16,9 +17,9 @@ pub struct PermissionOverwrite {
 
 /// Type of a permission overwrite target.
 // Keep in sync with `twilight_util::permission_calculator::PermissionCalculator`!
-#[derive(Clone, Copy, Debug, Serialize, Eq, Hash, PartialEq, Deserialize)]
+#[derive(Clone, Copy, Debug, Serialize, Eq, Hash, PartialEq, Deserialize, EnumString)]
 #[non_exhaustive]
-#[serde(from = "u8", into = "u8", rename_all = "snake_case")]
+#[serde(try_from = "&str", into = "u8", rename_all = "snake_case")]
 pub enum PermissionOverwriteType {
     /// Permission overwrite targets an individual member.
     Member,
