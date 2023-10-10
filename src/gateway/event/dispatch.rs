@@ -280,7 +280,6 @@ impl<'de, 'a> DeserializeSeed<'de> for DispatchEventWithTypeDeserializer<'a> {
             ),
             "GIFT_CODE_UPDATE" => {
                 deserializer.deserialize_ignored_any(IgnoredAny)?;
-
                 DispatchEvent::GiftCodeUpdate
             }
             "GUILD_AUDIT_LOG_ENTRY_CREATE" => DispatchEvent::GuildAuditLogEntryCreate(Box::new(
@@ -389,13 +388,11 @@ impl<'de, 'a> DeserializeSeed<'de> for DispatchEventWithTypeDeserializer<'a> {
             }
             "PRESENCES_REPLACE" => {
                 deserializer.deserialize_ignored_any(IgnoredAny)?;
-
                 DispatchEvent::PresencesReplace
             }
             "READY" => DispatchEvent::Ready(Box::new(Ready::deserialize(deserializer)?)),
             "RESUMED" => {
                 deserializer.deserialize_ignored_any(IgnoredAny)?;
-
                 DispatchEvent::Resumed
             }
             "STAGE_INSTANCE_CREATE" => {
@@ -438,7 +435,12 @@ impl<'de, 'a> DeserializeSeed<'de> for DispatchEventWithTypeDeserializer<'a> {
             "WEBHOOKS_UPDATE" => {
                 DispatchEvent::WebhooksUpdate(WebhooksUpdate::deserialize(deserializer)?)
             }
-            other => return Err(DeError::unknown_variant(other, &[])),
+            other => {
+                return Err(DeError::custom(format!(
+                    "unknown variant `{other}`, not implemented"
+                )))
+            } // TODO
+              //other => return Err(DeError::unknown_variant(other, &[])),
         })
     }
 }

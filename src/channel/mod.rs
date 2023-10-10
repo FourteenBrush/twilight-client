@@ -57,52 +57,31 @@ use serde::{Deserialize, Serialize};
 /// [Discord Docs/Channel]: https://discord.com/developers/docs/resources/channel
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Channel {
-    /// ID of the application that created the channel.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub application_id: Option<Id<ApplicationMarker>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub applied_tags: Option<Vec<Id<TagMarker>>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub available_tags: Option<Vec<ForumTag>>,
-    /// Bitrate (in bits) setting of audio channels.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub bitrate: Option<u32>,
-    /// Default duration without messages before the channel's threads
-    /// automatically archive.
-    ///
-    /// Automatic archive durations are not locked behind the guild's boost
-    /// level.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub default_auto_archive_duration: Option<AutoArchiveDuration>,
-    /// Default forum layout view used to display posts in forum channels.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub default_forum_layout: Option<ForumLayout>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub default_reaction_emoji: Option<DefaultReaction>,
-    /// Default sort order used to display posts in forum channels.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub default_sort_order: Option<ForumSortOrder>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub default_thread_rate_limit_per_user: Option<u16>,
-    /// Flags of the channel.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub flags: Option<ChannelFlags>,
-    /// ID of the guild the channel is in.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub guild_id: Option<Id<GuildMarker>>,
-    /// Hash of the channel's icon.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub icon: Option<ImageHash>,
     /// ID of the channel.
     pub id: Id<ChannelMarker>,
-    /// Whether users can be invited.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub invitable: Option<bool>,
     /// Type of the channel.
     ///
     /// This can be used to determine what fields *might* be available.
     #[serde(rename = "type")]
     pub kind: ChannelType,
+    /// ID of the guild the channel is in.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub guild_id: Option<Id<GuildMarker>>,
+    /// Sorting position of the channel.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub position: Option<i32>,
+    /// Explicit permission overwrites for members and roles.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub permission_overwrites: Option<Vec<PermissionOverwrite>>,
+    /// Name of the channel.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    /// Topic of the channel.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub topic: Option<String>,
+    /// Whether the channel has been configured to be NSFW.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub nsfw: Option<bool>,
     /// For text channels, this is the ID of the last message sent in the
     /// channel.
     ///
@@ -110,9 +89,29 @@ pub struct Channel {
     /// forum.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_message_id: Option<Id<GenericMarker>>,
-    /// ID of the last message pinned in the channel.
+    /// Bitrate (in bits) setting of audio channels.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub last_pin_timestamp: Option<Timestamp>,
+    pub bitrate: Option<u32>,
+    /// Number of users that may be in the channel.
+    ///
+    /// Zero refers to no limit.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub user_limit: Option<u32>,
+    /// Amount of seconds a user has to wait before sending another message.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rate_limit_per_user: Option<u16>,
+    /// Recipients of the channel.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub recipients: Option<Vec<User>>,
+    /// Hash of the channel's icon.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub icon: Option<ImageHash>,
+    /// ID of the creator of the channel.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub owner_id: Option<Id<UserMarker>>,
+    /// ID of the application that created the channel.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub application_id: Option<Id<ApplicationMarker>>,
     /// Whether the channel is managed by an application via the [`gdm.join`]
     /// oauth scope.
     ///
@@ -122,30 +121,6 @@ pub struct Channel {
     /// [group channels]: ChannelType::Group
     #[serde(skip_serializing_if = "Option::is_none")]
     pub managed: Option<bool>,
-    /// Member that created the channel.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub member: Option<ThreadMember>,
-    /// Number of members in the channel.
-    ///
-    /// At most a value of 50 is provided although the real number may be
-    /// higher.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub member_count: Option<i8>,
-    /// Number of messages in the channel.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub message_count: Option<u32>,
-    /// Name of the channel.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    /// Whether a thread was newly created.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub newly_created: Option<bool>,
-    /// Whether the channel has been configured to be NSFW.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub nsfw: Option<bool>,
-    /// ID of the creator of the channel.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub owner_id: Option<Id<UserMarker>>,
     /// ID of the parent channel.
     ///
     /// For guild channels this is the ID of the parent category channel.
@@ -153,39 +128,68 @@ pub struct Channel {
     /// For threads this is the ID of the channel the thread was created in.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parent_id: Option<Id<ChannelMarker>>,
-    /// Explicit permission overwrites for members and roles.
+    /// ID of the last message pinned in the channel.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub permission_overwrites: Option<Vec<PermissionOverwrite>>,
-    /// Sorting position of the channel.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub position: Option<i32>,
-    /// Amount of seconds a user has to wait before sending another message.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub rate_limit_per_user: Option<u16>,
-    /// Recipients of the channel.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub recipients: Option<Vec<User>>,
+    pub last_pin_timestamp: Option<Timestamp>,
     /// ID of the voice region for the channel.
     ///
     /// Defaults to automatic for applicable channels.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub rtc_region: Option<String>,
-    /// Metadata about a thread.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub thread_metadata: Option<ThreadMetadata>,
-    /// Topic of the channel.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub topic: Option<String>,
-    /// Number of users that may be in the channel.
-    ///
-    /// Zero refers to no limit.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub user_limit: Option<u32>,
     /// Camera video quality mode of the channel.
     ///
     /// Defaults to [`VideoQualityMode::Auto`] for applicable channels.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub video_quality_mode: Option<VideoQualityMode>,
+    /// Number of messages in the channel.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub message_count: Option<u32>,
+    /// Number of members in the channel.
+    ///
+    /// At most a value of 50 is provided although the real number may be
+    /// higher.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub member_count: Option<i8>,
+    /// Metadata about a thread.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub thread_metadata: Option<ThreadMetadata>,
+    /// Member that created the channel.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub member: Option<ThreadMember>,
+    /// Default duration without messages before the channel's threads
+    /// automatically archive.
+    ///
+    /// Automatic archive durations are not locked behind the guild's boost
+    /// level.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub default_auto_archive_duration: Option<AutoArchiveDuration>,
+    // TODO: MISSING(permissions)
+    /// Flags of the channel.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub flags: Option<ChannelFlags>,
+    // TODO: MISSING(total_messages_sent)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub available_tags: Option<Vec<ForumTag>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub applied_tags: Option<Vec<Id<TagMarker>>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub default_reaction_emoji: Option<DefaultReaction>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub default_thread_rate_limit_per_user: Option<u16>,
+    /// Default sort order used to display posts in forum channels.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub default_sort_order: Option<ForumSortOrder>,
+    /// Default forum layout view used to display posts in forum channels.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub default_forum_layout: Option<ForumLayout>,
+    // TODO: MISPLACED_FIELD?, also present on ThreadMetaData
+    /// Whether users can be invited.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub invitable: Option<bool>,
+    // TODO: UNKNOWN_FIELD
+    /// Whether a thread was newly created.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub newly_created: Option<bool>,
 }
 
 #[cfg(test)]

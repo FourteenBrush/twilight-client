@@ -226,7 +226,7 @@ impl<'de> Visitor<'de> for GatewayEventVisitor<'_> {
     type Value = GatewayEvent;
 
     fn expecting(&self, formatter: &mut Formatter<'_>) -> FmtResult {
-        formatter.write_str("struct GatewayEvent")
+        formatter.write_str("a GatewayEvent struct")
     }
 
     #[allow(clippy::too_many_lines)]
