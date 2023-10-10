@@ -23,13 +23,11 @@ mod tests {
             &[
                 Token::Struct {
                     name: "UnavailableGuild",
-                    len: 2,
+                    len: 1,
                 },
                 Token::Str("id"),
                 Token::NewtypeStruct { name: "Id" },
                 Token::Str("1"),
-                Token::Str("unavailable"),
-                Token::Bool(true),
                 Token::StructEnd,
             ],
         );

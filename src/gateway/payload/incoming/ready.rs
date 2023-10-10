@@ -32,11 +32,9 @@ mod tests {
         let guilds = vec![
             UnavailableGuild {
                 id: Id::new(1),
-                unavailable: true,
             },
             UnavailableGuild {
                 id: Id::new(2),
-                unavailable: true,
             },
         ];
 
